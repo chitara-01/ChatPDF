@@ -1,0 +1,23 @@
+[project]
+name = "chat_pdf"
+version = "0.1.0"
+description = "chat-pdf using crewAI"
+authors = [{ name = "Your Name", email = "you@example.com" }]
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "crewai[tools]>=0.102.0,<1.0.0"
+]
+
+[project.scripts]
+chat_pdf = "chat_pdf.main:run"
+run_crew = "chat_pdf.main:run"
+train = "chat_pdf.main:train"
+replay = "chat_pdf.main:replay"
+test = "chat_pdf.main:test"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.crewai]
+type = "crew"
