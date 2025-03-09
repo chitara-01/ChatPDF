@@ -18,8 +18,8 @@ def run():
     Run the crew.
     """
     inputs = {
-        'topic': 'AI LLMs',
-        'current_year': str(datetime.now().year)
+        'user_query': 'AI LLMs',
+        'pdf_path': "pdf_data/langchain_guide01.pdf"
     }
     
     try:

@@ -1,9 +1,19 @@
+import os
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
+from crewai_tools import PDFSearchTool
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 # If you want to run a snippet of code before or after the crew starts, 
 # you can use the @before_kickoff and @after_kickoff decorators
 # https://docs.crewai.com/concepts/crews#example-crew-class-with-decorators
+
+# Configure Gemini Flash 1.5
+gemini = ChatGoogleGenerativeAI(
+    model=os.environ.get("MODEL"),  # Use the Flash 1.5 model
+    google_api_key=os.environ.get("GEMINI_API_KEY"),
+    temperature=0.7
+)
 
 @CrewBase
 class ChatPdf():
@@ -18,17 +28,22 @@ class ChatPdf():
 	# If you would like to add tools to your agents, you can learn more about it here:
 	# https://docs.crewai.com/concepts/agents#agent-tools
 	@agent
-	def researcher(self) -> Agent:
+	def pdf_explorer(self) -> Agent:
 		return Agent(
-			config=self.agents_config['researcher'],
-			verbose=True
+			config=self.agents_config['pdf_explorer'],
+			verbose=True,
+			allow_delegation=True,
+			tools=[PDFSearchTool()],
+			llm=gemini
 		)
 
 	@agent
-	def reporting_analyst(self) -> Agent:
+	def pdf_analyst(self) -> Agent:
 		return Agent(
-			config=self.agents_config['reporting_analyst'],
-			verbose=True
+			config=self.agents_config['pdf_analyst'],
+			verbose=True,
+			allow_delegation=True,
+			llm=gemini
 		)
 
 	# To learn more about structured task outputs, 
